@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import * as io from 'socket.io-client';
+
 
 
 @Injectable({
@@ -10,10 +13,10 @@ export class ChatService {
   private socket;
 
 
-  constructor() {
+  constructor(private http:HttpClient) {
   this.socket = io(this.url);
   this.socket.emit('test', 'hello world');
-  
+
 
 
   }
