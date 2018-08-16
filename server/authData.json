@@ -1,12 +1,16 @@
 [
 
-{"name": "Codie",
+{
+ "name": "Codie",
  "email": "little.codie@gmail.com",
- "channels":""},
+ "channels":""
+},
 
- {"name": "Allan",
+{
+  "name": "Allan",
   "email": "allan@gmail.com",
-  "channels":""}
+  "channels":""
+}
 
 
 

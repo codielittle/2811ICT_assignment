@@ -4,7 +4,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  {path:'groups', component:GroupsComponent},
+  {path:'groups/:username', component:GroupsComponent},
   {path: '', component:LoginComponent},
 ];
 

@@ -28,7 +28,7 @@ newUser(newstring: string) {
       //Is a valid user
       this.isUser = true;
       console.log(this.isUser);
-      this.router.navigateByUrl('/groups');
+      this.router.navigateByUrl('/groups/' + newstring, { skipLocationChange: true });
 
     }
     else {

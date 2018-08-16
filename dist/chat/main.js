@@ -48,7 +48,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 var routes = [
-    { path: 'groups', component: _groups_groups_component__WEBPACK_IMPORTED_MODULE_2__["GroupsComponent"] },
+    { path: 'groups/:username', component: _groups_groups_component__WEBPACK_IMPORTED_MODULE_2__["GroupsComponent"] },
     { path: '', component: _login_login_component__WEBPACK_IMPORTED_MODULE_3__["LoginComponent"] },
 ];
 var AppRoutingModule = /** @class */ (function () {
@@ -338,7 +338,7 @@ var ChatComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".listClass{\n  background-color: red;\n}\n"
 
 /***/ }),
 
@@ -349,7 +349,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  groups works!\n</p>\n"
+module.exports = "<h1>Groups: {{username}}</h1>\n<br>\n<div class=\"listClass\">\n  <ul *ngFor=\"let group of data\">\n   <li><h1>{{ group.name }}</h1></li>\n   <ul>\n\n    <li *ngFor=\"let child of group.children\">\n      {{ child.name }}\n    </li>\n   </ul>\n </ul>\n</div>\n"
 
 /***/ }),
 
@@ -364,6 +364,7 @@ module.exports = "<p>\n  groups works!\n</p>\n"
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GroupsComponent", function() { return GroupsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -374,10 +375,38 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var GroupsComponent = /** @class */ (function () {
-    function GroupsComponent() {
+    function GroupsComponent(route) {
+        this.route = route;
+        this.data = [
+            {
+                'name': "Sport",
+                'children': [
+                    {
+                        'name': "NRL"
+                    },
+                    {
+                        'name': "Basketball"
+                    }
+                ]
+            },
+            {
+                'name': "Cooking",
+                'children': [
+                    {
+                        'name': "Recipes"
+                    },
+                    {
+                        'name': "Nutrition"
+                    }
+                ]
+            }
+        ];
     }
     GroupsComponent.prototype.ngOnInit = function () {
+        this.username = this.route.snapshot.params['username'];
+        console.log(this.username);
     };
     GroupsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -385,7 +414,7 @@ var GroupsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./groups.component.html */ "./src/app/groups/groups.component.html"),
             styles: [__webpack_require__(/*! ./groups.component.css */ "./src/app/groups/groups.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
     ], GroupsComponent);
     return GroupsComponent;
 }());
@@ -459,7 +488,7 @@ var LoginComponent = /** @class */ (function () {
                 //Is a valid user
                 _this.isUser = true;
                 console.log(_this.isUser);
-                _this.router.navigateByUrl('/groups');
+                _this.router.navigateByUrl('/groups/' + newstring, { skipLocationChange: true });
             }
             else {
                 // Not a valid user
