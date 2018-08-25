@@ -1,13 +1,100 @@
-<h1>Groups: {{username}}</h1>
-<br>
-<div class="listClass">
-  <ul *ngFor="let group of data">
-   <li><h1>{{ group.name }}</h1></li>
-   <ul>
+<div class="nav">
+  <span>Test</span>
+  <div id="btn-group">
+  <button class="buttons" (click)="logout()" style="background-color:#87309b">Logout</button>
+  <div *ngIf="auth == 0">
+    <button class="buttons" (click)="toggleAdd()">Create New User</button>
+    <button class="buttons" style="background-color:#c43636" (click)="toggleRemove()">Delete Users</button>
+  </div>
+  <div *ngIf="auth == 1">
+    <button class="buttons" (click)="toggleAdd()">Create New User</button>
 
-    <li *ngFor="let child of group.children">
-      {{ child.name }}
-    </li>
-   </ul>
- </ul>
+  </div>
+  <h3 class="userName">User: {{username}}</h3>
+  </div>
 </div>
+
+<br>
+<div class="container">
+  <div class="leftDiv">
+    <div class="listClass">
+      <ul *ngFor="let group of userData">
+       <li><h1>{{ group.name }}</h1></li>
+      <ul>
+
+      <li *ngFor="let child of group.children" (click)="goToChannel(child.name, group.name)">
+          {{ child.name }}
+      </li>
+      </ul>
+      <div class="label" *ngIf="auth == 0 || auth == 1">
+        <h4 >Enter the name of a new channel</h4>
+        <input type="text" (keyup.enter)="newChannel(group.channelName, group.name)" [(ngModel)]="group.channelName" placeholder="Channel name: "/>
+        <button (click)="newChannel(group.channelName, group.name)">Submit</button>
+      </div>
+      </ul>
+    </div>  <br>
+  <!-- Only show the input to create a new group if the user is auth level 0 || 1 -->
+    <div *ngIf="auth == 0">
+      <h3 class="label">Enter the name of a new group</h3>
+      <input type="text" (keyup.enter)="newGroup(groupName)" [(ngModel)]="groupName" placeholder="Group Name: "/>
+      <button (click)="newGroup(groupName)">Submit</button>
+    </div>
+  </div>
+  <div class="rightDiv" *ngIf="showVar2">
+    <div class="arrow-up"></div>
+    <div class="login-container">
+
+      <div class="form-wrapper">
+
+        <div class="form">
+          <div class="input-group">
+            <label for="username" class="label">Username</label>
+            <input type="text" [(ngModel)]="removeUsername" class="input" placeholder="Enter a username to delete:">
+          </div>
+
+          <button type="submit" class="login-btn" style="background-color:#c43636" (click)="removeUser()">Delete User</button> <br>
+          <div id="error">{{result}}</div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+  <div class="rightDiv" *ngIf="showVar">
+    <div class="arrow-up"></div>
+    <div class="login-container">
+
+      <div class="form-wrapper">
+
+        <div class="form">
+          <div class="input-group">
+            <label for="username" class="label">Username</label>
+            <input type="text" [(ngModel)]="newUsername" class="input" placeholder="">
+          </div>
+
+          <div class="input-group">
+            <div class="label-flex">
+              <label for="username" class="label">Email</label>
+            </div>
+            <input type="email" [(ngModel)]="newEmail" class="input" placeholder="">
+          </div>
+          <div class="authSelect">
+            <ul *ngFor="let auth of authLevels">
+              <label>
+                <input type="radio" name="lvl" [value]='auth.auth' [(ngModel)]="authSelected">
+                {{auth.auth}}: {{auth.authName}}
+              </label>
+              <br>
+            </ul>
+          </div>
+
+          <button type="submit" class="login-btn" (click)="newUser(newUsername, newEmail, value)">Add User</button> <br>
+          <div id="error">{{result}}</div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div> <!--container -->

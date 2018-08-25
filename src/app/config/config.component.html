@@ -1,0 +1,33 @@
+<div class="container">
+  <h1><u>Config Mode</u></h1>
+  <span id="errorMessage">{{errorMessage}}</span>
+  <br>
+  <span class="leftContent">
+    <h3>The user is currently subscribed to the following groups: </h3>
+    <ul *ngFor="let group of data">
+
+
+      <li>{{group}}</li>
+
+
+
+    </ul>
+  </span>
+  <span class="rightContent">
+    <h3>Select a group to enroll user _____ in: </h3>
+    <ul *ngFor="let group of fullData">
+
+
+      <label>
+        <input type="radio" name="left_group" [value]='group' [(ngModel)]="right_radioSelected">
+        {{group}}
+      </label>
+      <br>
+    </ul>
+  </span>
+  <br>
+
+</div>
+<button (click)="go(left_radioSelected, right_radioSelected)">Submit</button>
+
+<button (click)="logout()">Logout</button>

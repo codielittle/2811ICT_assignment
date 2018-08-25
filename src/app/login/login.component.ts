@@ -11,38 +11,43 @@ import { Router } from '@angular/router';
 export class LoginComponent{
 title = 'app';
 myValue = '';
-username;
+username = 'Codie';
 private url = 'http://localhost:3000';
 isUser = false;
-
+errorMessage = "";
 constructor(chatService: ChatService, private http:HttpClient, private router:Router){
 
 }
-newUser(newstring: string) {
+loginUser(userString: string) {
   interface User {
     success: string;
     username: string;
+    auth: number;
   }
-  this.http.get<User>(this.url + "/api/auth?username="+newstring).subscribe(data => {
+  this.http.get<User>(this.url + "/api/auth?username="+userString).subscribe(data => {
     if (data.success){
+      console.log("--> " + JSON.stringify(data));
       //Is a valid user
       this.isUser = true;
-      console.log(this.isUser);
-      this.router.navigateByUrl('/groups/' + newstring, { skipLocationChange: true });
+      localStorage.setItem('myData', JSON.stringify(data));
+
+      this.router.navigateByUrl('/groups/' + userString, { skipLocationChange: true });
+      //localStorage.setItem("user", JSON.stringify(this.userObject));
 
     }
     else {
+      this.errorMessage = "Username is not registered";
       // Not a valid user
       console.log("other");
     }
   });
 
 
-  this.username = newstring;
+  this.username = userString;
 
 
 
-  localStorage.setItem("username", newstring);
+  localStorage.setItem("username", userString);
   this.myValue = "";
 }
 }

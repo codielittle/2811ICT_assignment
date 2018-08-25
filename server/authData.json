@@ -1,17 +1,1 @@
-[
-
-{
- "name": "Codie",
- "email": "little.codie@gmail.com",
- "channels":""
-},
-
-{
-  "name": "Allan",
-  "email": "allan@gmail.com",
-  "channels":""
-}
-
-
-
-]
+[{"name":"Super","email":"super@gmail.com","groups":["Sport","University","TV","newGroup"],"auth":0},{"name":"Codie","email":"little.codie@gmail.com","groups":["Sport","University"],"auth":2},{"name":"Charlie","email":"charlie@gmail.com","groups":["University"],"auth":0},{"name":"Georgia","email":"georgia@email.com","groups":[],"auth":"2"}]
