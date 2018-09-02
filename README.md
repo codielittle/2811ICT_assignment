@@ -12,7 +12,13 @@ Requests were passed from the client to the server via a specific route and the 
 
 ## Routes - All routes began with '/api':
  - /groups: 
- - /getgroups:
+ 
+    Parameters: Username
+
+    Return Values: {'groups': groups}
+    
+    Purpose: Returns the groups which the user is in.
+
  - /reg:
     Parameters: 
     Return Values: 
@@ -24,14 +30,20 @@ Requests were passed from the client to the server via a specific route and the 
 
  - /auth:
  
-    Parameters: 
-    Return Values: 
-    Purpose: 
+    Parameters: username 
+    
+    Return Values: {'Success': true/false}
+    
+    Purpose: To authenticate the user and determine if there is a valid user with this username
+    
  - /update: 
  
     Paramaters: Username and group name
+    
     Return Values: {'Success': true/false}
+    
     Purpose: To update the authData.json file when a new group is added. 
+    
  - /getdata:
  - /adduser:
  - /removeuser:
