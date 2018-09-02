@@ -1,5 +1,7 @@
 # 2811ICT Codie Little - s5075952
-
+## Github
+I used multiple branches in development to allow me to test new features without fear of breaking any other changes. 
+I commited my changes frequently and merged these changes to Master when I was happy with the progress.
 ## Data
 I had two JSON files for storing data. 'authData.json' was used to store all the information about users. Each user object had a name, email, auth level and an array of groups that they are members of. 
 
@@ -12,12 +14,24 @@ Requests were passed from the client to the server via a specific route and the 
  - /groups: 
  - /getgroups:
  - /reg:
- - /delete: 
+    Parameters: 
+    Return Values: 
+    Purpose: 
+ - /delete:
+    Parameters: username 
+    Return Values: {'Success': true/false}
+    Purpose: To delete a user.
+
  - /auth:
+ 
+    Parameters: 
+    Return Values: 
+    Purpose: 
  - /update: 
-  Paramaters: Username and group name
-  Return Values: 
-  Purpose: 
+ 
+    Paramaters: Username and group name
+    Return Values: {'Success': true/false}
+    Purpose: To update the authData.json file when a new group is added. 
  - /getdata:
  - /adduser:
  - /removeuser:
