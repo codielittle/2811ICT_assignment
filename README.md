@@ -15,24 +15,27 @@ Requests were passed from the client to the server via a specific route and the 
  
     Parameters: Username
 
-    Return Values: {'groups': groups}
+    Return Values: ```{'groups': groups}```
     
     Purpose: Returns the groups which the user is in.
 
  - /reg:
-    Parameters: 
-    Return Values: 
-    Purpose: 
+    Parameters: Username, Email, AuthLvl
+    
+    Return Values: ```{'username': uname, 'success': true}```
+    
+    Purpose: To register a new employee. The client will parse the new username, email and the auth level to the server for registration.
+    
  - /delete:
     Parameters: username 
-    Return Values: {'Success': true/false}
+    Return Values: ```{'Success': true/false}```
     Purpose: To delete a user.
 
  - /auth:
  
     Parameters: username 
     
-    Return Values: {'Success': true/false}
+    Return Values: ```{'Success': true/false}```
     
     Purpose: To authenticate the user and determine if there is a valid user with this username
     
@@ -40,25 +43,36 @@ Requests were passed from the client to the server via a specific route and the 
  
     Paramaters: Username and group name
     
-    Return Values: {'Success': true/false}
+    Return Values: ```{'Success': true/false}```
     
     Purpose: To update the authData.json file when a new group is added. 
     
  - /getdata:
- - /adduser:
+ - /adduser: 
+ 
+    Parameters: Username and Group
+
+    Return Values: ```{'Success': true/false}```
+
+    Purpose: To add a user to the specified group/channel 
+ 
  - /removeuser:
+ 
+    Parameters: Username and Group
+
+    Return Values: ```{'Success': true/false}```
+
+    Purpose: To remove a user from a specified group/channel 
+    
+    
  - /newchannel: 
+ 
+    Parameters: Username, Group and channel
 
+    Return Values: ```{'Success': true/false}```
 
-Describe the organisation of your Git repository and how you used it during the
-development of your solution
-● Description of data structures used in the client and server to represent the various
-entities, e.g.: users, groups, channels, etc.
-● A description of how you divided the responsibilities between client and server (you are
-encouraged to have the server provide a REST API which returns JSON in addition to a
-static directory)
-● A list of routes, parameters, return values, and purpose
-● Angular architecture: components, services, models, routes
+    Purpose: To add a new channel the be a child of a group. 
+
 
 ## Angular Architecture
 I used 3 main components for my application; login, groups and chat. The login function took the input from the client and sent a get request to the server to authenticate the user based on the username entered. The groups function is where all the different groups and channels were displayed that the user was in. The chat component would be used to send messages from the client side to the server which are seperated into different rooms. 
