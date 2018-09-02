@@ -1,0 +1,32 @@
+[
+  {
+    "group_name": "Sport",
+    "channel_name": "Basketball",
+    "messages":
+    [
+      {
+        "user_name": "Codie",
+        "text": "This is some message"
+      },
+
+      {
+        "user_name": "Allan",
+        "text": "Nice Message!"
+      },
+
+      {
+        "user_name": "Codie",
+        "text": "OtherMessage"
+      },
+
+      {
+        "user_name": "Codie",
+        "text": "Test"
+      }
+    ]
+
+
+
+
+  }
+]

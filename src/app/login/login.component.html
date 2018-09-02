@@ -1,0 +1,9 @@
+<div id="container">
+
+  <input id="userInput" (keyup.enter)="loginUser(myValue)" type="text" [(ngModel)]="myValue" placeholder="Please enter a username: "/>
+  <br>
+
+  <button id="newUserButton" (click)="loginUser(myValue)">Submit</button>
+  <br>
+  <div id="error">{{errorMessage}}</div>
+</div>
