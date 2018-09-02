@@ -1,16 +1,16 @@
 <div class="nav">
-  <span>Test</span>
+  <span>Chat</span>
   <div id="btn-group">
-  <button class="buttons" (click)="logout()" style="background-color:#87309b">Logout</button>
-  <div *ngIf="auth == 0">
-    <button class="buttons" (click)="toggleAdd()">Create New User</button>
-    <button class="buttons" style="background-color:#c43636" (click)="toggleRemove()">Delete Users</button>
-  </div>
-  <div *ngIf="auth == 1">
-    <button class="buttons" (click)="toggleAdd()">Create New User</button>
+    <button class="buttons" (click)="logout()" style="background-color:#87309b">Logout</button>
+    <div *ngIf="auth == 0">
+      <button class="buttons" (click)="toggleAdd()">Create New User</button>
+      <button class="buttons" style="background-color:#c43636" (click)="toggleRemove()">Delete Users</button>
+    </div>
+    <div *ngIf="auth == 1">
+      <button class="buttons" (click)="toggleAdd()">Create New User</button>
 
-  </div>
-  <h3 class="userName">User: {{username}}</h3>
+    </div>
+    <h3 class="userName">User: {{username}}</h3>
   </div>
 </div>
 
@@ -41,7 +41,7 @@
     </div>
   </div>
   <div class="rightDiv" *ngIf="showVar2">
-    <div class="arrow-up"></div>
+    <div class="arrow-up2"></div>
     <div class="login-container">
 
       <div class="form-wrapper">
@@ -49,7 +49,7 @@
         <div class="form">
           <div class="input-group">
             <label for="username" class="label">Username</label>
-            <input type="text" [(ngModel)]="removeUsername" class="input" placeholder="Enter a username to delete:">
+            <input type="text" (keyup.enter)="removeUser()" [(ngModel)]="removeUsername" class="input" placeholder="Enter a username to delete:">
           </div>
 
           <button type="submit" class="login-btn" style="background-color:#c43636" (click)="removeUser()">Delete User</button> <br>
@@ -63,38 +63,67 @@
   </div>
   <div class="rightDiv" *ngIf="showVar">
     <div class="arrow-up"></div>
-    <div class="login-container">
+      <div *ngIf="auth == 0">
+        <div class="login-container">
 
-      <div class="form-wrapper">
+          <div class="form-wrapper">
 
-        <div class="form">
-          <div class="input-group">
-            <label for="username" class="label">Username</label>
-            <input type="text" [(ngModel)]="newUsername" class="input" placeholder="">
-          </div>
+            <div class="form">
+              <div class="input-group">
+                <label for="username" class="label">Username</label>
+                <input type="text" [(ngModel)]="newUsername" class="input" placeholder="">
+              </div>
 
-          <div class="input-group">
-            <div class="label-flex">
-              <label for="username" class="label">Email</label>
+              <div class="input-group">
+                <div class="label-flex">
+                  <label for="username" class="label">Email</label>
+                </div>
+                <input type="email" [(ngModel)]="newEmail" class="input" placeholder="">
+              </div>
+              <div class="authSelect">
+                <ul *ngFor="let auth of authLevels">
+                  <label>
+                    <input type="radio" name="lvl" [value]='auth.auth' [(ngModel)]="authSelected">
+                    {{auth.auth}}: {{auth.authName}}
+                  </label>
+                  <br>
+                </ul>
+              </div>
+
+              <button type="submit" class="login-btn" (click)="newUser(newUsername, newEmail, value)">Add User</button> <br>
+              <div id="error">{{result}}</div>
             </div>
-            <input type="email" [(ngModel)]="newEmail" class="input" placeholder="">
-          </div>
-          <div class="authSelect">
-            <ul *ngFor="let auth of authLevels">
-              <label>
-                <input type="radio" name="lvl" [value]='auth.auth' [(ngModel)]="authSelected">
-                {{auth.auth}}: {{auth.authName}}
-              </label>
-              <br>
-            </ul>
-          </div>
 
-          <button type="submit" class="login-btn" (click)="newUser(newUsername, newEmail, value)">Add User</button> <br>
-          <div id="error">{{result}}</div>
+
+          </div>
         </div>
+      </div><!--Testing-->
+      <div *ngIf="auth == 1">
+        <div class="login-container">
+
+          <div class="form-wrapper">
+
+            <div class="form">
+              <div class="input-group">
+                <label for="username" class="label">Username</label>
+                <input type="text" [(ngModel)]="newUsername" class="input" placeholder="">
+              </div>
+
+              <div class="input-group">
+                <div class="label-flex">
+                  <label for="username" class="label">Email</label>
+                </div>
+                <input type="email" [(ngModel)]="newEmail" class="input" placeholder="">
+              </div>
 
 
-      </div>
-    </div>
+              <button type="submit" class="login-btn" (click)="newUser(newUsername, newEmail)">Add User</button> <br>
+              <div id="error">{{result}}</div>
+            </div>
+
+
+          </div>
+        </div>
+      </div><!--Testing-->
   </div>
 </div> <!--container -->

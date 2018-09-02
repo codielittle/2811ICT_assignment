@@ -23,7 +23,7 @@ export class GroupsComponent implements OnInit {
   newUsername;
   newEmail;
   newAuth;
-  authSelected;
+  authSelected = 2;
   removeUsername;
   authLevels = [
     {
@@ -39,6 +39,7 @@ export class GroupsComponent implements OnInit {
       "authName": "Regular User"
     }
   ];
+
   showVar: boolean = false;
   showVar2: boolean = false;
   numGroups: number;
@@ -48,52 +49,21 @@ export class GroupsComponent implements OnInit {
   auth; // 0 = Super Admin, 1 = Group Admin, 2 = Regular
 
   temp;
-  //testArray: any[] = [];
+
   userData: any[] = [];
   tempData;
-  //"Master Data Source"
-  // data: any[] = [
-  //   {
-  //     'name': "Sport",
-  //     'children':
-  //     [
-  //       {
-  //         'name': "NRL"
-  //       },
-  //       {
-  //         'name': "Basketball"
-  //       },
-  //       {
-  //         'name': "Cricket"
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     'name': "Cooking",
-  //     'children':
-  //     [
-  //       {
-  //         'name': "Recipes"
-  //       },
-  //       {
-  //         'name': "Nutrition"
-  //       }
-  //     ]
-  //   }
-  // ];
+
   constructor(private route:ActivatedRoute, private http: HttpClient, private router:Router,private form:FormsModule) { }
   //Just navigate without doing this, just use localStorage 🙃🙃🙃🙃🙃🙃🙃
   ngOnInit() {
     this.temp = localStorage.getItem('myData');
-    console.log(this.temp);
-    //this.temp2 =
     this.tempData = JSON.parse(this.temp);
     let otherData = JSON.parse(this.temp);
 
     this.tempData = this.tempData.groups;
     this.numGroups = this.tempData.length;
 
-    console.log(otherData);
+
     this.auth = Number(otherData.auth);
     localStorage.setItem("auth", (this.auth));
     // I now have the groups which the user has access to / is subscribed to.
@@ -122,20 +92,21 @@ export class GroupsComponent implements OnInit {
     });
 
   }
+  //Navigate to a channel chat room on click
   goToChannel(channelName, groupName){
     console.log(channelName);
     localStorage.setItem('groupName', groupName);
     localStorage.setItem('channelName', channelName);
+    localStorage.setItem('auth', this.auth);
 
     this.router.navigateByUrl('/chat', { skipLocationChange: true });
 
   }
 
+  //After a new channel or group is added, this function will be called to loop through and make sure all the local data is
+  //up to date and correct.
   populate(){
 
-    // TODO: Maybe a post request to index.js to write to the user authData file. Currently the group is not being listed as
-    //       The app thinks that the user does not have access to the group. The post request will update the authData.JSON
-    //       file to include this group in the groups array.
 
 
 
@@ -146,7 +117,7 @@ export class GroupsComponent implements OnInit {
       for(let y=0;y<this.numGroups;y++){
         if(this.data[x].name == this.tempData[y]){
           //If this fires, it means that the group has been found from the "master data source"
-          // Push that group into the user data array
+          // Push that group into the user data array to be displayed
           this.userData.push(
             {
               'name': this.data[x].name,
@@ -162,7 +133,7 @@ export class GroupsComponent implements OnInit {
 
           }
           count++;
-          // this.data[i].children.push({'name': channelName});
+
         }
       }
     }
@@ -173,6 +144,7 @@ export class GroupsComponent implements OnInit {
 
   }
 
+  //Request is sent to the server with the username and the group name
   newGroup(groupName){
     console.log(this.data);
     this.data.push(
@@ -182,11 +154,10 @@ export class GroupsComponent implements OnInit {
       }
     );
 
-    console.log(groupName);
-    this.numGroups++;
-    //this.populate();
 
-    console.log(this.data);
+    this.numGroups++;
+
+
     this.userData.push(
       {
         'name': groupName,
@@ -203,7 +174,7 @@ export class GroupsComponent implements OnInit {
     localStorage.setItem('myData', JSON.stringify(this.userData));
     let test = localStorage.getItem("myData");
     console.log(test);
-    //Post request here, as it will be only one variable to parse, rather than a object or array.
+
 
   }
 
@@ -223,20 +194,37 @@ export class GroupsComponent implements OnInit {
 
       }
     }
+    this.http.get(this.url + "/api/newchannel?username="+this.username + "&groupname=" +indexFinder + "&channelname="+channelName).subscribe(
+    res => {
+        const response = res;
+        console.log(response);
+    });
 
     //this.populate();
   }
 
+//Clears local storage and navigates back to the root
   logout(){
     localStorage.clear();
     this.router.navigateByUrl('');
   }
+  //Toggles add form
   toggleAdd(){
     this.showVar = !this.showVar;
+    this.result = " ";
+    if(this.showVar2){
+      this.showVar2 = !this.showVar2;
+    }
   }
+  //Toggles user remove form
   toggleRemove(){
     this.showVar2 = !this.showVar2;
+    this.result = " ";
+    if(this.showVar){
+      this.showVar = !this.showVar;
+    }
   }
+  //Takes in new user details and sends a request to the server to add a new employee
   newUser(newUsername, newEmail){
     if(this.authSelected == undefined){
       this.result = "Error - Please Select An Auth Level";
@@ -254,14 +242,16 @@ export class GroupsComponent implements OnInit {
         }
     });
   }
+  //Sends a request to the server to remove a user
   removeUser(){
     this.http.get(this.url + "/api/delete?username="+this.removeUsername).subscribe(data => {
       console.log(data);
         if (data['success']){
-          console.log("Deleted")
+          this.result = "User " + this.removeUsername + " Has Been Deleted.";
+
         }
         else{
-          console.log("Error - A User With This Username Already Exists");
+          this.result = "Error - No User With This Username Was Found";
         }
     });
   }

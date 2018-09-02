@@ -19,6 +19,7 @@ constructor(chatService: ChatService, private http:HttpClient, private router:Ro
 
 }
 loginUser(userString: string) {
+  //returns the user interface from server get request
   interface User {
     success: string;
     username: string;
@@ -26,13 +27,13 @@ loginUser(userString: string) {
   }
   this.http.get<User>(this.url + "/api/auth?username="+userString).subscribe(data => {
     if (data.success){
-      console.log("--> " + JSON.stringify(data));
+
       //Is a valid user
       this.isUser = true;
       localStorage.setItem('myData', JSON.stringify(data));
 
       this.router.navigateByUrl('/groups/' + userString, { skipLocationChange: true });
-      //localStorage.setItem("user", JSON.stringify(this.userObject));
+      //Navigate to the groups component
 
     }
     else {
@@ -41,12 +42,7 @@ loginUser(userString: string) {
       console.log("other");
     }
   });
-
-
   this.username = userString;
-
-
-
   localStorage.setItem("username", userString);
   this.myValue = "";
 }

@@ -50,7 +50,7 @@ app.get('/api/groups', (req,res) => {
       }
     }
 
-    // var groups = .....;
+
     res.send({'groups': groups});
 
   });
@@ -187,8 +187,7 @@ app.get('/api/update', (req, res) => {
   // Now we know the username and the new group. Now we have to find which index the user is in the json data.
   fs.readFile('authData.json', 'utf8', function(err,data){
     userObj = JSON.parse(data);
-    console.log("User OBJ" + userObj);
-    console.log("DATA" + data);
+    
     for(let j=0;j<userObj.length;j++){
 
       if(userObj[j].name === user){
@@ -270,8 +269,82 @@ app.get('/api/getdata', (req, res) => {
 
   });
 
+})
+app.get('/api/adduser', (req,res) => {
+  var user = req.query.username;
+  var group = req.query.group;
 
-    //userObj.push({''})
+  fs.readFile('authData.json', 'utf8', function(err,data){
+    var userData = JSON.parse(data);
 
-  // fs.writeFile('authData.json', )
+    for(let j=0;j<userData.length;j++){
+
+      if(userData[j].name === user){
+        userData[j].groups.push(group);
+        var newData = JSON.stringify(userData);
+      }
+
+    }
+    fs.writeFile('authData.json', newData, 'utf-8', function(err) {
+      if(err) throw err;
+      res.send({'success': true});
+    });
+
+
+  });
+
+})
+app.get('/api/removeuser', (req,res) => {
+  var user = req.query.username;
+  var group = req.query.group;
+
+  fs.readFile('authData.json', 'utf8', function(err,data){
+    var userData = JSON.parse(data);
+
+    for(let j=0;j<userData.length;j++){
+
+      if(userData[j].name === user){
+        for(let k=0;k<userData[j].groups.length;k++){
+          if(userData[j].groups[k] === group){
+            userData[j].groups.splice(k, 1);
+            //console.log(userObj);
+            var newData = JSON.stringify(userData);
+          }
+        }
+
+      }
+
+    }
+    fs.writeFile('authData.json', newData, 'utf-8', function(err) {
+      if(err) throw err;
+      res.send({'success': true});
+    });
+
+
+  });
+
+})
+app.get('/api/newchannel', (req, res) => {
+  var user = req.query.username;
+  var channel = req.query.channelname;
+  var group = req.query.groupname;
+  var temp;
+  fs.readFile('chatData.json', 'utf8', function(err,data){
+    var dataObj = JSON.parse(data);
+    for(let j=0;j<dataObj.length;j++){
+      if(dataObj[j].name === group){
+        dataObj[j].children.push({'name': channel});
+
+        var temp = JSON.stringify(dataObj);
+
+      }
+    }
+    fs.writeFile('chatData.json', temp, 'utf-8', function(err) {
+      if(err) throw err;
+      res.send({'success': true});
+    });
+
+  });
+
+
 })

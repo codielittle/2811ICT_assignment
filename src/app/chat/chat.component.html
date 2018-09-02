@@ -1,12 +1,71 @@
 <div class="container">
   <div class="nav">
     <span class="headText"><u>{{ groupName }}/<b>{{ channel_name }}</b></u></span>
-    <div id="btn-group">
-    <button class="buttons" (click)="logout()" style="background-color:#c43636">Logout</button>
-    <button (click)="sendMessage(message)" class="buttons" style="background-color:black">Delete</button>
+    <div *ngIf="auth == 0 || auth == 1">
+      <div class="btn-group">
+      <button class="buttons" (click)="logout()" style="background-color:#c43636">Logout</button>
+      <button (click)="toggleRemove()" class="buttons" style="background-color:black">Remove User</button>
+      <button (click)="toggleAdd()" class="buttons" style="background-color:#1f9134">Add User</button>
 
-    <h3 class="userName">User: {{username}}</h3>
+
+      </div>
     </div>
+
+    <div *ngIf="auth == 2">
+      <div class="btn-group">
+      <button class="buttons" (click)="logout()" style="background-color:#c43636">Logout</button>
+
+
+      <!-- <h3 class="userName">User: {{username}}</h3> -->
+      </div>
+    </div>
+
+  </div>
+
+
+
+     <!--    Display form to remove a user from this channel. TODO: Only show if the user is auth LVL 0 or 1 -->
+  <div class="removeDiv" *ngIf="showVar">
+    <div class="arrow-up2"></div>
+    <div class="login-container">
+
+      <div class="form-wrapper">
+
+        <div class="form">
+          <div class="input-group">
+            <label for="username" class="label">Username</label>
+            <input type="text" (keyup.enter)="removeUser()" [(ngModel)]="removeUsername" class="input" placeholder="Remove a user from this group:">
+          </div>
+
+          <button type="submit" class="login-btn" style="background-color:#c43636" (click)="removeUser()">Delete User</button> <br>
+          <div id="error">{{result}}</div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+  <div class="addDiv" *ngIf="showVar2">
+    <div class="arrow-up2"></div>
+    <div class="login-container">
+
+      <div class="form-wrapper">
+
+        <div class="form">
+          <div class="input-group">
+            <label for="username" class="label">Username</label>
+            <input type="text" (keyup.enter)="addUser()" [(ngModel)]="addUsername" class="input" placeholder="Add a user to this group:">
+          </div>
+
+          <button type="submit" class="login-btn" style="background-color:#1f9134" (click)="addUser()">Add User</button> <br>
+          <div id="error">{{result}}</div>
+        </div>
+
+
+      </div>
+    </div>
+
   </div>
   <!-- <div id="btn-group">
     <button (click)="logout()">Logout</button>
@@ -14,7 +73,7 @@
   </div> -->
   <!-- <u>{{ groupName }}/<b>{{ channel_name }}</b></u> -->
 
-  <div id="chat_history" style="height: 500px">
+  <div id="chat_history" style="height: 400px">
     <!-- if authorised, on click, admin will be alerted to see if they want to remove the user from the group -->
     <!-- TODO: Or, if auth, show config button which will open a new page (maybe modal) which will list the users in that
     group. From there, on click, the user will be removed.
