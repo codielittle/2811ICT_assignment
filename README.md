@@ -1,13 +1,23 @@
 # 2811ICT Codie Little - s5075952
 
-- 
-##Routes - All routes began with /api:
+## Data
+I had two JSON files for storing data. 'authData.json' was used to store all the information about users. Each user object had a name, email, auth level and an array of groups that they are members of. 
+
+In 'chatData.json' the data for each group was stored. The group object had a name, and an array of channel objects, with each channel having a name. 
+
+Requests were passed from the client to the server via a specific route and the data was returned back as a response. 
+
+
+## Routes - All routes began with '/api':
  - /groups: 
  - /getgroups:
  - /reg:
  - /delete: 
  - /auth:
- - /update: Username and group name are parsed as paramaters.
+ - /update: 
+  Paramaters: Username and group name
+  Return Values: 
+  Purpose: 
  - /getdata:
  - /adduser:
  - /removeuser:
@@ -23,3 +33,9 @@ encouraged to have the server provide a REST API which returns JSON in addition 
 static directory)
 ● A list of routes, parameters, return values, and purpose
 ● Angular architecture: components, services, models, routes
+
+## Angular Architecture
+I used 3 main components for my application; login, groups and chat. The login function took the input from the client and sent a get request to the server to authenticate the user based on the username entered. The groups function is where all the different groups and channels were displayed that the user was in. The chat component would be used to send messages from the client side to the server which are seperated into different rooms. 
+
+The only service I used was the chat service, which was responsibile for sending and receiving messages using SocketIO.
+To navigate to the different components I used a router and the paramaters 'skipLocationChange' set to true. This meant that the URL was not changed when navigation occured. This essentiatlly created a single page application.
