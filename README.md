@@ -14,6 +14,10 @@ Requests were passed from the client to the server via a specific route and the 
    The credentials collection will contain the data for each of the different users which have been created. This collection will also be used to store different records about different users which will store a new record for each group that the user is in. From here, each of these records will contain an array of channels that the user has been added to. 
    
    Example User: ```{"_id": ObjectId, "username": "Codie", "password": "Super", "auth": 0}```
+# Testing 
+Unit testing for this web app was completed using the node module Mocha. 
+Tests were ran for the user authentication routes of the node server. 
+To run the tests I changed the ```package.json``` file to run mocha when the test script is ran. From there, ```npm test``` will run the rests I have configured and provide the results from there.
 
 ## Routes - All routes began with '/api':
  - /groups: 
