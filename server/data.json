@@ -1,32 +1,112 @@
-[
-  {
-    "group_name": "Sport",
-    "channel_name": "Basketball",
-    "messages":
-    [
-      {
-        "user_name": "Codie",
-        "text": "This is some message"
-      },
+<div class="container">
+  <div class="leftDiv">
+    <div class="listClass">
+      <ul *ngFor="let group of userData">
+       <li><h1>{{ group.name }}</h1></li>
+      <ul>
 
-      {
-        "user_name": "Allan",
-        "text": "Nice Message!"
-      },
+      <li *ngFor="let child of group.children" (click)="goToChannel(child.name, group.name)">
+          {{ child.name }}
+      </li>
+      </ul>
+      <div class="label" *ngIf="auth == 0 || auth == 1">
+        <h4 >Enter the name of a new channel</h4>
+        <input type="text" (keyup.enter)="newChannel(group.channelName, group.name)" [(ngModel)]="group.channelName" placeholder="Channel name: "/>
+        <button (click)="newChannel(group.channelName, group.name)">Submit</button>
+      </div>
+      </ul>
+    </div>  <br>
+  <!-- Only show the input to create a new group if the user is auth level 0 || 1 -->
+    <div *ngIf="auth == 0">
+      <h3 class="label">Enter the name of a new group</h3>
+      <input type="text" (keyup.enter)="newGroup(groupName)" [(ngModel)]="groupName" placeholder="Group Name: "/>
+      <button (click)="newGroup(groupName)">Submit</button>
+    </div>
+  </div>
+  <div class="rightDiv" *ngIf="showVar2">
+    <div class="arrow-up2"></div>
+    <div class="login-container">
 
-      {
-        "user_name": "Codie",
-        "text": "OtherMessage"
-      },
+      <div class="form-wrapper">
 
-      {
-        "user_name": "Codie",
-        "text": "Test"
-      }
-    ]
+        <div class="form">
+          <div class="input-group">
+            <label for="username" class="label">Username</label>
+            <input type="text" (keyup.enter)="removeUser()" [(ngModel)]="removeUsername" class="input" placeholder="Enter a username to delete:">
+          </div>
+
+          <button type="submit" class="login-btn" style="background-color:#c43636" (click)="removeUser()">Delete User</button> <br>
+          <div id="error">{{result}}</div>
+        </div>
 
 
+      </div>
+    </div>
+
+  </div>
+  <div class="rightDiv" *ngIf="showVar">
+    <div class="arrow-up"></div>
+      <div *ngIf="auth == 0">
+        <div class="login-container">
+
+          <div class="form-wrapper">
+
+            <div class="form">
+              <div class="input-group">
+                <label for="username" class="label">Username</label>
+                <input type="text" [(ngModel)]="newUsername" class="input" placeholder="">
+              </div>
+
+              <div class="input-group">
+                <div class="label-flex">
+                  <label for="username" class="label">Email</label>
+                </div>
+                <input type="email" [(ngModel)]="newEmail" class="input" placeholder="">
+              </div>
+              <div class="authSelect">
+                <ul *ngFor="let auth of authLevels">
+                  <label>
+                    <input type="radio" name="lvl" [value]='auth.auth' [(ngModel)]="authSelected">
+                    {{auth.auth}}: {{auth.authName}}
+                  </label>
+                  <br>
+                </ul>
+              </div>
+
+              <button type="submit" class="login-btn" (click)="newUser(newUsername, newEmail, value)">Add User</button> <br>
+              <div id="error">{{result}}</div>
+            </div>
 
 
-  }
-]
+          </div>
+        </div>
+      </div><!--Testing-->
+      <div *ngIf="auth == 1">
+        <div class="login-container">
+
+          <div class="form-wrapper">
+
+            <div class="form">
+              <div class="input-group">
+                <label for="username" class="label">Username</label>
+                <input type="text" [(ngModel)]="newUsername" class="input" placeholder="">
+              </div>
+
+              <div class="input-group">
+                <div class="label-flex">
+                  <label for="username" class="label">Email</label>
+                </div>
+                <input type="email" [(ngModel)]="newEmail" class="input" placeholder="">
+              </div>
+
+
+              <button type="submit" class="login-btn" (click)="newUser(newUsername, newEmail)">Add User</button> <br>
+              <div id="error">{{result}}</div>
+            </div>
+
+
+          </div>
+        </div>
+      </div><!--Testing-->
+  </div>
+</div> <!--container -->

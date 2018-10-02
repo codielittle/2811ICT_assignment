@@ -4,11 +4,12 @@ module.exports = function(app, io){
 
     io.on('connection', (socket)=>{
         console.log('user connected');
-        socket.on('room', function(room) {
-          console.log(room);
+        socket.on('room', function(room, user) {
+          console.log(room + " ---- " + user);
           socket.join(room);
           roomName = room;
-
+          //io.in(roomName).emit('newuser', {type:'user', text: user});
+          io.in(roomName).emit('newuser', {user: user});
 
 
         });

@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
+import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
 
 
@@ -19,10 +19,12 @@ export class GroupsComponent implements OnInit {
   channelName;
   index;
   value;
+  y;
   userObj;
   newUsername;
-  newEmail;
+  newPwd;
   newAuth;
+  //username;
   authSelected = 2;
   removeUsername;
   authLevels = [
@@ -42,165 +44,120 @@ export class GroupsComponent implements OnInit {
 
   showVar: boolean = false;
   showVar2: boolean = false;
+  showVar3: boolean = false;
+
   numGroups: number;
   data: any[] = [];
   private url = 'http://localhost:3000';
 
   auth; // 0 = Super Admin, 1 = Group Admin, 2 = Regular
-
+  user_data: any;
   temp;
+  testVar;
+
+  testArray;
+  z: any;
 
   userData: any[] = [];
   tempData;
+  x: any;
+  groups = [];
 
-  constructor(private route:ActivatedRoute, private http: HttpClient, private router:Router,private form:FormsModule) { }
-  //Just navigate without doing this, just use localStorage 🙃🙃🙃🙃🙃🙃🙃
-  ngOnInit() {
-    this.temp = localStorage.getItem('myData');
-    this.tempData = JSON.parse(this.temp);
-    let otherData = JSON.parse(this.temp);
+  channels = [];
+  groups2: any[] = [];
 
-    this.tempData = this.tempData.groups;
-    this.numGroups = this.tempData.length;
-
-
-    this.auth = Number(otherData.auth);
-    localStorage.setItem("auth", (this.auth));
-    // I now have the groups which the user has access to / is subscribed to.
-    this.username = this.route.snapshot.params['username'];
-
-
-
-    this.http.get(this.url + "/api/getdata").subscribe(
-    res => {
-
-        for(let k=0;k<res['data'].length;k++){
-          this.data.push(res['data'][k]);
-          console.log(res['data'][k]);
-        }
-        let response = res;
-
-        localStorage.setItem("dataSource", JSON.stringify(this.data));
-        let testThing = localStorage.getItem("dataSource");
-
-        this.populate(); //Will only display groups which the user has access to.
-
-        // TODO: Get full data source -- Get user's subscribed groups -- Filter through full data source and disregard any data
-        //that does not relate to the specific user. -- On new group: update dataSource && authData.json to add the group to the
-        //users list.
-
-    });
+  constructor(private authservice: AuthService, private route:ActivatedRoute, private http: HttpClient, private router:Router,private form:FormsModule) {
 
   }
+  //  1: Get groups that user is in
+  //  2: Get channels within those groups
+  ngOnInit() {
+    this.auth = localStorage.getItem('user_auth');
+    this.username = localStorage.getItem('currentUser');
+    this.getUserData();
+
+  }
+  newUser(username: string, password: string, auth: number){
+    this.authservice.newUser(username, password, auth).subscribe(data => {
+
+    });
+  }
+  addChannel(){
+    // TODO: post to 'credentials' & 'groups'
+    // TODO: ensure that the data is refreshed to show new groups
+
+  }
+
+  // }
   //Navigate to a channel chat room on click
   goToChannel(channelName, groupName){
-    console.log(channelName);
+
     localStorage.setItem('groupName', groupName);
     localStorage.setItem('channelName', channelName);
-    localStorage.setItem('auth', this.auth);
+
+    console.log("GROUP " + groupName + " CHANNEL " + channelName);
+
 
     this.router.navigateByUrl('/chat', { skipLocationChange: true });
 
   }
+  //Get data specific to that user - groups and also channels within that group.
+  getUserData(){
+    this.groups2 = [];
+    this.http.get('/api/get?username='+this.username).subscribe(data => {
+      this.user_data = data['data'];
+      for(let i=0;i<this.user_data.length;i++){
 
-  //After a new channel or group is added, this function will be called to loop through and make sure all the local data is
-  //up to date and correct.
-  populate(){
+        this.groups2.push(
 
-
-
-
-    this.userData = [];
-    let count = 0;
-    console.log("Num groups = " + this.numGroups);
-    for(let x =0;x<this.data.length;x++){
-      for(let y=0;y<this.numGroups;y++){
-        if(this.data[x].name == this.tempData[y]){
-          //If this fires, it means that the group has been found from the "master data source"
-          // Push that group into the user data array to be displayed
-          this.userData.push(
-            {
-              'name': this.data[x].name,
-              'children':[]
-            }
-          );
-
-
-          for(let j = 0;j<this.data[x].children.length;j++){
-
-
-            this.userData[count].children.push({'name': this.data[x].children[j].name});
-
+          {
+            'name': this.user_data[i].groupname,
+            'channels': []
           }
-          count++;
+      );
+        for(let j=0;j<this.user_data[i].channels.length;j++){
 
+          this.groups2[i].channels.push(
+              {
+                'name': this.user_data[i].channels[j]
+              }
+          );
         }
-      }
-    }
-    console.log(this.data);
-    localStorage.setItem('myData', JSON.stringify(this.userData));
-    this.temp = localStorage.getItem('myData');
-    console.log(this.temp);
 
+      }
+
+
+    });
   }
+
+
 
   //Request is sent to the server with the username and the group name
-  newGroup(groupName){
-    console.log(this.data);
-    this.data.push(
-      {
-        'name': groupName,
-        'children':[]
-      }
-    );
 
 
-    this.numGroups++;
+  newChannel(channel: string, group: string){
 
-
-    this.userData.push(
-      {
-        'name': groupName,
-        'children': []
-      }
-    );
-    this.http.get(this.url + "/api/update?username="+this.username + "&groupname="+groupName).subscribe(
-    res => {
-        const response = res;
-        console.log(response);
+    this.authservice.newChannel(channel, group).subscribe( data => {
+        //console.log(typeof(data['success']));
+        //this.result = data['success']
+        if (data['success'] == "false"){
+          console.log("MATCHES");
+        }
+        else if(data['success'] == "true"){
+          console.log("Success");
+        }
     });
-
-
-    localStorage.setItem('myData', JSON.stringify(this.userData));
-    let test = localStorage.getItem("myData");
-    console.log(test);
-
+    
+    this.getUserData();
 
   }
 
-  newChannel(channelName, indexFinder){
-    for(let i=0;i<this.data.length;i++){
-      // Will find which index the group is located in the MASTER DATA SOURCE
-      if(this.data[i].name == indexFinder){
-        this.data[i].children.push({'name': channelName});
+  newGroup(group: string){
+    this.authservice.newGroup(group).subscribe( data => {
 
-
-      }
-    }
-    for(let k=0;k<this.userData.length;k++){
-      // Will find which index the group is located in the USER DATA SOURCE
-      if(this.userData[k].name == indexFinder){
-        this.userData[k].children.push({'name': channelName});
-
-      }
-    }
-    this.http.get(this.url + "/api/newchannel?username="+this.username + "&groupname=" +indexFinder + "&channelname="+channelName).subscribe(
-    res => {
-        const response = res;
-        console.log(response);
     });
 
-    //this.populate();
+    this.getUserData();
   }
 
 //Clears local storage and navigates back to the root
@@ -215,6 +172,9 @@ export class GroupsComponent implements OnInit {
     if(this.showVar2){
       this.showVar2 = !this.showVar2;
     }
+    else if(this.showVar3){
+      this.showVar3 = !this.showVar3;
+    }
   }
   //Toggles user remove form
   toggleRemove(){
@@ -222,26 +182,40 @@ export class GroupsComponent implements OnInit {
     this.result = " ";
     if(this.showVar){
       this.showVar = !this.showVar;
+
+    }
+    else if(this.showVar3){
+      this.showVar3 = !this.showVar3;
+    }
+  }
+  toggleGroup(){
+    this.showVar3 = !this.showVar3;
+    this.result = " ";
+    if(this.showVar){
+      this.showVar = !this.showVar;
+    }
+    else if(this.showVar2){
+      this.showVar2 = !this.showVar2;
     }
   }
   //Takes in new user details and sends a request to the server to add a new employee
-  newUser(newUsername, newEmail){
-    if(this.authSelected == undefined){
-      this.result = "Error - Please Select An Auth Level";
-      return;
-
-    }
-
-    this.http.get(this.url + "/api/reg?username="+newUsername + "&email="+newEmail + "&auth="+this.authSelected).subscribe(data => {
-      console.log(data);
-        if (data['success']){
-          this.result = "Success - New User Added";
-        }
-        else{
-          this.result = "Error - A User With This Username Already Exists";
-        }
-    });
-  }
+  // newUser(newUsername, newEmail){
+  //   if(this.authSelected == undefined){
+  //     this.result = "Error - Please Select An Auth Level";
+  //     return;
+  //
+  //   }
+  //
+  //   this.http.post(this.url + "/api/reg?username="+newUsername + "&email="+newEmail + "&auth="+this.authSelected).subscribe(data => {
+  //     console.log(data);
+  //       if (data['success']){
+  //         this.result = "Success - New User Added";
+  //       }
+  //       else{
+  //         this.result = "Error - A User With This Username Already Exists";
+  //       }
+  //   });
+  // }
   //Sends a request to the server to remove a user
   removeUser(){
     this.http.get(this.url + "/api/delete?username="+this.removeUsername).subscribe(data => {

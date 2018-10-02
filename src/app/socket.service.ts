@@ -8,7 +8,6 @@ export class SocketService {
 
   private url = 'http://localhost:3000';
   private socket;
-
   constructor() {
   }
 
@@ -16,9 +15,12 @@ export class SocketService {
     this.socket.emit('add-message', message);
 
   }
-  joinChannel(channel){
-    this.socket.emit('room', channel);
+  joinChannel(channel, user){
+    this.socket.emit('room', channel, user);
+
+
   }
+
   getMessages(){
     console.log('getMessages()');
     this.socket = io(this.url);

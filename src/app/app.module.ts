@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { AuthService } from './auth.service';
 import { ChatService } from './chat.service';
 import { ChatComponent } from './chat/chat.component';
 import { GroupsComponent } from './groups/groups.component';
@@ -25,7 +26,7 @@ import { ConfigComponent } from './config/config.component';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [ChatService],
+  providers: [ChatService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
