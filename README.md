@@ -9,6 +9,11 @@ In 'chatData.json' the data for each group was stored. The group object had a na
 
 Requests were passed from the client to the server via a specific route and the data was returned back as a response. 
 
+# Data Structures & Mongo Collections
+ - /credentials: 
+   The credentials collection will contain the data for each of the different users which have been created. This collection will also be used to store different records about different users which will store a new record for each group that the user is in. From here, each of these records will contain an array of channels that the user has been added to. 
+   
+   Example User: ```{"_id": ObjectId, "username": "Codie", "password": "Super", "auth": 0}```
 
 ## Routes - All routes began with '/api':
  - /groups: 
