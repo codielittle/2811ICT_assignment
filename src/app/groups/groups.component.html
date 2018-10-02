@@ -3,6 +3,7 @@
   <div id="btn-group">
     <button class="buttons" (click)="logout()" style="background-color:#87309b">Logout</button>
     <div *ngIf="auth == 0">
+      <button class="buttons" style="background-color:#d43636" (click)="toggleGroup()">Add User To Group</button>
       <button class="buttons" (click)="toggleAdd()">Create New User</button>
       <button class="buttons" style="background-color:#c43636" (click)="toggleRemove()">Delete Users</button>
     </div>
@@ -15,14 +16,16 @@
 </div>
 
 <br>
+
+
 <div class="container">
   <div class="leftDiv">
     <div class="listClass">
-      <ul *ngFor="let group of userData">
+      <ul *ngFor="let group of groups2">
        <li><h1>{{ group.name }}</h1></li>
       <ul>
 
-      <li *ngFor="let child of group.children" (click)="goToChannel(child.name, group.name)">
+      <li *ngFor="let child of group.channels" (click)="goToChannel(child.name, group.name)">
           {{ child.name }}
       </li>
       </ul>
@@ -61,6 +64,27 @@
     </div>
 
   </div>
+  <div class="rightDiv" *ngIf="showVar3">
+    <div class="arrow-up3"></div>
+    <div class="login-container">
+
+      <div class="form-wrapper">
+        
+        <div class="form">
+          <div class="input-group">
+            <label for="username" class="label">Username</label>
+            <input type="text" (keyup.enter)="removeUser()" [(ngModel)]="removeUsername" class="input" placeholder="Enter a username to delete:">
+          </div>
+
+          <button type="submit" class="login-btn" style="background-color:#c43636" (click)="removeUser()">Delete User</button> <br>
+          <div id="error">{{result}}</div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
   <div class="rightDiv" *ngIf="showVar">
     <div class="arrow-up"></div>
       <div *ngIf="auth == 0">
@@ -76,9 +100,9 @@
 
               <div class="input-group">
                 <div class="label-flex">
-                  <label for="username" class="label">Email</label>
+                  <label for="username" class="label">Password</label>
                 </div>
-                <input type="email" [(ngModel)]="newEmail" class="input" placeholder="">
+                <input type="text" [(ngModel)]="newPwd" class="input" placeholder="">
               </div>
               <div class="authSelect">
                 <ul *ngFor="let auth of authLevels">
@@ -90,7 +114,7 @@
                 </ul>
               </div>
 
-              <button type="submit" class="login-btn" (click)="newUser(newUsername, newEmail, value)">Add User</button> <br>
+              <button type="submit" class="login-btn" (click)="newUser(newUsername, newPwd, authSelected)">Add User</button> <br>
               <div id="error">{{result}}</div>
             </div>
 

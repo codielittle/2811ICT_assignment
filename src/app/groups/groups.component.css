@@ -15,7 +15,7 @@
   border-width: 3px; */
   /* background-color: #eff3f4; */
   float:right;
-  margin-right: 50px;
+  margin-right: 90px;
 
 }
 .nav {
@@ -27,7 +27,7 @@
 .arrow-up {
   width: 0;
   height: 0;
-  margin-left: 250px;
+  margin-left: 125px;
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
   border-bottom: 9px solid #d6d6d6;
@@ -36,7 +36,16 @@
 .arrow-up2 {
   width: 0;
   height: 0;
-  margin-left: 115px;
+  margin-left: 15px;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #d6d6d6;
+
+}
+.arrow-up3 {
+  width: 0;
+  height: 0;
+  margin-left: 280px;
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
   border-bottom: 9px solid #d6d6d6;
@@ -75,6 +84,7 @@
 .login-container {
   height: auto;
   width: 100%;
+  
 
 
 }

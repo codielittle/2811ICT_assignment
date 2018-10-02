@@ -25,7 +25,44 @@ http.listen(port, () => {
     console.log(`started on port: ${port}`);
 });
 
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017';
+MongoClient.connect(url, {poolSize:10},function(err, client) {
+  if (err) {return console.log(err)}
+  const dbName = 'chat';
+  const db = client.db(dbName);
+  require('./routes/auth.js')(app, db);
+  require('./routes/register.js')(app, db);
+  require('./routes/fetch.js')(app, db);
+  require('./routes/message.js')(app, db);
+  require('./routes/getdata.js')(app, db);
+  require('./routes/newchannel.js')(app, db);
+  require('./routes/newgroup.js')(app, db);
+  require('./routes/remove.js')(app, db);
 
+  const query = require('./routes/querycallback.js');
+
+
+  // query.query(db, function(res){
+  //   console.log("TEST");
+  //   console.log(res);
+  // });
+  //require('./routes/get_chats.js')(app, db);
+
+
+
+})
+
+// app.get("/api/fetchdata", function(req, res) {
+//   db.collection('credentials').find({username: "Codie"}).toArray(function(err, data) {
+//     if (err) {
+//       handleError(res, err.message, "Failed");
+//
+//     } else {
+//       res.status(200).json(data);
+//     }
+//   });
+// });
 // io.on('connection', (socket) => {
 //     socket.on('test', (message) => {
 //         console.log(message);
@@ -102,71 +139,71 @@ app.get('/api/reg', (req, res) => {
     }
   });
 })
-app.get('/api/delete', (req, res) => {
-  var isUser = 0;
-  var userObj;
-  var uname = req.query.username;
+// app.get('/api/delete', (req, res) => {
+//   var isUser = 0;
+//   var userObj;
+//   var uname = req.query.username;
+//
+//
+//   fs.readFile('authData.json', 'utf-8', function(err, data){
+//     if (err){
+//       console.log(err);
+//     }else {
+//     userObj = JSON.parse(data);
+//     for (let i=0;i<userObj.length;i++){
+//       if (userObj[i].name == uname){
+//         isUser = 1;
+//
+//         console.log(userObj);
+//         userObj.splice(i, 1);
+//         console.log(userObj);
+//         var newData = JSON.stringify(userObj);
+//
+//         fs.writeFile('authData.json', newData, 'utf-8', function(err) {
+//             if (err) throw err;
+//             res.send({'username': uname, 'success': true});
+//           });
+//
+//       }
+//     }
+//     if (isUser == 0){
+//       res.send({'username':'', success:false});
+//     }
+//     // if (isUser == 1){
+//     //   res.send({'username':'', success:false});
+//     // } else {
+//     //   userObj.push({'name': uname, 'email': email, 'groups': [], 'auth': newAuth});
+//     //   var newData = JSON.stringify(userObj);
+//     //   fs.writeFile('authData.json', newData, 'utf-8', function(err) {
+//     //     if (err) throw err;
+//     //     res.send({'username': uname, 'success': true});
+//     //   });
+//     //   }
+//     }
+//   });
+// })
 
-
-  fs.readFile('authData.json', 'utf-8', function(err, data){
-    if (err){
-      console.log(err);
-    }else {
-    userObj = JSON.parse(data);
-    for (let i=0;i<userObj.length;i++){
-      if (userObj[i].name == uname){
-        isUser = 1;
-
-        console.log(userObj);
-        userObj.splice(i, 1);
-        console.log(userObj);
-        var newData = JSON.stringify(userObj);
-
-        fs.writeFile('authData.json', newData, 'utf-8', function(err) {
-            if (err) throw err;
-            res.send({'username': uname, 'success': true});
-          });
-
-      }
-    }
-    if (isUser == 0){
-      res.send({'username':'', success:false});
-    }
-    // if (isUser == 1){
-    //   res.send({'username':'', success:false});
-    // } else {
-    //   userObj.push({'name': uname, 'email': email, 'groups': [], 'auth': newAuth});
-    //   var newData = JSON.stringify(userObj);
-    //   fs.writeFile('authData.json', newData, 'utf-8', function(err) {
-    //     if (err) throw err;
-    //     res.send({'username': uname, 'success': true});
-    //   });
-    //   }
-    }
-  });
-})
-
-app.get('/api/auth', (req,res) => {
-  var uname = req.query.username;
-
-  var userObj;
-
-  fs.readFile('authData.json', 'utf8', function(err,data){
-    if(err) {
-      console.log(err);
-      res.send({'username':'','success':false});
-    } else {
-
-      userObj = JSON.parse(data);
-      for (let i=0;i<userObj.length;i++){
-        if (userObj[i].name == uname){
-          res.send({'username':uname,'success':true, 'groups': userObj[i].groups, 'auth': userObj[i].auth});
-          return;
-        }
-      }
-      res.send({'username':uname,'success':false});
-    }});
-})
+// app.get('/api/auth', (req,res) => {
+//   var uname = req.query.username;
+//
+//   var userObj;
+//
+//   fs.readFile('authData.json', 'utf8', function(err,data){
+//     if(err) {
+//       console.log(err);
+//       res.send({'username':'','success':false});
+//     } else {
+//
+//       userObj = JSON.parse(data);
+//       for (let i=0;i<userObj.length;i++){
+//         if (userObj[i].name == uname){
+//           res.send({'username':uname,'success':true, 'groups': userObj[i].groups, 'auth': userObj[i].auth});
+//           return;
+//         }
+//       }
+//       res.send({'username':uname,'success':false});
+//     }});
+// })
 
 // TODO: There are a few bugs as the data is not being properly processed. The process needs to be broken down and simplified.
 //       Use the whiteboard. When a new group is entered it updates, but the issues start when a 2nd group is added. It replaces
@@ -187,7 +224,7 @@ app.get('/api/update', (req, res) => {
   // Now we know the username and the new group. Now we have to find which index the user is in the json data.
   fs.readFile('authData.json', 'utf8', function(err,data){
     userObj = JSON.parse(data);
-    
+
     for(let j=0;j<userObj.length;j++){
 
       if(userObj[j].name === user){
@@ -294,36 +331,36 @@ app.get('/api/adduser', (req,res) => {
   });
 
 })
-app.get('/api/removeuser', (req,res) => {
-  var user = req.query.username;
-  var group = req.query.group;
-
-  fs.readFile('authData.json', 'utf8', function(err,data){
-    var userData = JSON.parse(data);
-
-    for(let j=0;j<userData.length;j++){
-
-      if(userData[j].name === user){
-        for(let k=0;k<userData[j].groups.length;k++){
-          if(userData[j].groups[k] === group){
-            userData[j].groups.splice(k, 1);
-            //console.log(userObj);
-            var newData = JSON.stringify(userData);
-          }
-        }
-
-      }
-
-    }
-    fs.writeFile('authData.json', newData, 'utf-8', function(err) {
-      if(err) throw err;
-      res.send({'success': true});
-    });
-
-
-  });
-
-})
+// app.get('/api/removeuser', (req,res) => {
+//   var user = req.query.username;
+//   var group = req.query.group;
+//
+//   fs.readFile('authData.json', 'utf8', function(err,data){
+//     var userData = JSON.parse(data);
+//
+//     for(let j=0;j<userData.length;j++){
+//
+//       if(userData[j].name === user){
+//         for(let k=0;k<userData[j].groups.length;k++){
+//           if(userData[j].groups[k] === group){
+//             userData[j].groups.splice(k, 1);
+//             //console.log(userObj);
+//             var newData = JSON.stringify(userData);
+//           }
+//         }
+//
+//       }
+//
+//     }
+//     fs.writeFile('authData.json', newData, 'utf-8', function(err) {
+//       if(err) throw err;
+//       res.send({'success': true});
+//     });
+//
+//
+//   });
+//
+// })
 app.get('/api/newchannel', (req, res) => {
   var user = req.query.username;
   var channel = req.query.channelname;
@@ -348,3 +385,24 @@ app.get('/api/newchannel', (req, res) => {
 
 
 })
+
+
+app.get('/api/authtest', (req, res) => {
+  const helpers = require('.includes/helpers.js');
+
+  const assert = require('assert');
+  var uname = req.query.username;
+  var pwd = req.query.password;
+
+  var authResult = null;
+  var success = false;
+  authResult = helpers.auth(uname, pwd);
+  if (authResult.errors.length == 0){
+    success = true;
+  } else {
+    success = false;
+  }
+  res.send({'result': authResult.result, 'success': success, 'errors': authResult.errors});
+
+
+});

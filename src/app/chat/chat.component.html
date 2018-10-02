@@ -6,6 +6,7 @@
       <button class="buttons" (click)="logout()" style="background-color:#c43636">Logout</button>
       <button (click)="toggleRemove()" class="buttons" style="background-color:black">Remove User</button>
       <button (click)="toggleAdd()" class="buttons" style="background-color:#1f9134">Add User</button>
+      <button (click)="back()" class="buttons" style="background-color:#12dfdd">Back</button>
 
 
       </div>
@@ -34,7 +35,7 @@
         <div class="form">
           <div class="input-group">
             <label for="username" class="label">Username</label>
-            <input type="text" (keyup.enter)="removeUser()" [(ngModel)]="removeUsername" class="input" placeholder="Remove a user from this group:">
+            <input type="text" (keyup.enter)="removeUser()" [(ngModel)]="removeUsername" class="input" placeholder="Remove a user from this channel:">
           </div>
 
           <button type="submit" class="login-btn" style="background-color:#c43636" (click)="removeUser()">Delete User</button> <br>
@@ -55,7 +56,7 @@
         <div class="form">
           <div class="input-group">
             <label for="username" class="label">Username</label>
-            <input type="text" (keyup.enter)="addUser()" [(ngModel)]="addUsername" class="input" placeholder="Add a user to this group:">
+            <input type="text" (keyup.enter)="addUser()" [(ngModel)]="addUsername" class="input" placeholder="Add a user to this channel:">
           </div>
 
           <button type="submit" class="login-btn" style="background-color:#1f9134" (click)="addUser()">Add User</button> <br>
