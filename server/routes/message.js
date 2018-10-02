@@ -1,7 +1,7 @@
 module.exports = function(app,db) {
   app.post('/api/message', (req, res) => {
     const assert = require('assert');
-
+    //Route to send a new message. Message is added to the credentials collection
     var username = req.body.username.toString();
     var group = req.body.group.toString();
     var channel = req.body.channel.toString();
@@ -13,11 +13,9 @@ module.exports = function(app,db) {
     collection.find({channel: channel }).toArray(function(err, response) {
       if (err) throw err;
 
-      //result(res);
       res.send({'data': response});
 
     });
 
-    // TODO: THEN RETURN MESSAGE ARRAY? <== BUT AFTER PERFORMING A "FIND" searching the collection for the particular channel and then toArray.
   });
 }

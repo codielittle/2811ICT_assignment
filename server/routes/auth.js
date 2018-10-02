@@ -1,26 +1,22 @@
 module.exports = function(app,db) {
   var auth = 0;
-
+  //Route to check if the username and password is correct
   app.post('/api/auth', (req, res) => {
-    const helpers = require('.includes/helpers.js');
+
 
     const assert = require('assert');
     var uname = req.body.username.toString();
     var pwd = req.body.password.toString();
 
-    var authResult = null;
-    var success = false;
-    authResult = helpers.auth(uname, pwd);
-    if (authResult.errors.length == 0){
-      success = true;
-    } else {
-      success = false;
-    }
+
     const collection = db.collection('credentials');
     console.log(uname + " == " + pwd);
     collection.findOne({username: uname}, function(err, res) {
       if (err) throw err;
+      if(res){
         auth = res.auth;
+      }
+
 
     })
 

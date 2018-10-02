@@ -59,6 +59,7 @@
 
 }
 .userName{
+  float: left;
   text-align: center;
   vertical-align: middle;
 }
@@ -84,7 +85,7 @@
 .login-container {
   height: auto;
   width: 100%;
-  
+
 
 
 }

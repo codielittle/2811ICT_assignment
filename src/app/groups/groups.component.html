@@ -3,7 +3,7 @@
   <div id="btn-group">
     <button class="buttons" (click)="logout()" style="background-color:#87309b">Logout</button>
     <div *ngIf="auth == 0">
-      <button class="buttons" style="background-color:#d43636" (click)="toggleGroup()">Add User To Group</button>
+      <!-- <button class="buttons" style="background-color:#d43636" (click)="toggleGroup()">Add User To Group</button> -->
       <button class="buttons" (click)="toggleAdd()">Create New User</button>
       <button class="buttons" style="background-color:#c43636" (click)="toggleRemove()">Delete Users</button>
     </div>
@@ -64,12 +64,12 @@
     </div>
 
   </div>
-  <div class="rightDiv" *ngIf="showVar3">
+  <!-- <div class="rightDiv" *ngIf="showVar3">
     <div class="arrow-up3"></div>
     <div class="login-container">
 
       <div class="form-wrapper">
-        
+
         <div class="form">
           <div class="input-group">
             <label for="username" class="label">Username</label>
@@ -84,7 +84,7 @@
       </div>
     </div>
 
-  </div>
+  </div> -->
   <div class="rightDiv" *ngIf="showVar">
     <div class="arrow-up"></div>
       <div *ngIf="auth == 0">
