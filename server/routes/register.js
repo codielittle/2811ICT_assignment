@@ -1,7 +1,7 @@
 module.exports = function(app,db) {
   app.post('/api/register', (req, res) => {
     const assert = require('assert');
-
+    //Route to create a new user
     var uname = req.body.username.toString();
     var pwd = req.body.password.toString();
     var auth = req.body.auth;

@@ -6,7 +6,7 @@ module.exports = function(app,db) {
     var channel = req.query.channel;
     const collection = db.collection("credentials");
 
-
+    //Route to remove a user from a specific channel
     collection.findOne({username: uname,groupname: group}, function(err, res) {
       var updatedChannels = new Array();
       if (err) throw err;

@@ -50,7 +50,7 @@ export class AuthService {
   newChannel(channelname: string, groupname: string){
     return this.http.post<channel>('/api/newchannel', {group: groupname, channel: channelname });
   }
-  
+
   newGroup(groupname: string){
     return this.http.post<channel>('/api/newgroup', {group: groupname});
   }

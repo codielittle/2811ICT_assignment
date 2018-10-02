@@ -27,6 +27,11 @@ constructor(private authService: AuthService, private chatService: ChatService, 
 login() {
   // TODO: THis needs to be moved to a new auth service. As per http video.
   // return this.http.post<User>('/api/auth', {username: "Codie", password: "test"});
+  if(this.myValue == '' || this.myPwd == null){
+    this.errorMessage = "Both fields are required";
+    return;
+  }
+
   this.authService.login(this.myValue, this.myPwd).subscribe(
     data=>{
       console.log(data);
@@ -38,7 +43,7 @@ login() {
         this.router.navigateByUrl('/groups/' + this.myValue, { skipLocationChange: true });
       }
       else{
-        this.errorMessage = "Username is not registered";
+        this.errorMessage = "Username or Password is Incorrect";
       }
 
 
@@ -49,36 +54,6 @@ login() {
   )
 
 }
-// newUser() {
-//   this.authService.newUser(this.myValue, "Test").subscribe(
-//     data=> {
-//       console.log(data);
-//     }
-//   )
-// }
-loginUser(userString: string) {
-  //returns the user interface from server get request
 
-  this.http.get<User>(this.url + "/api/auth?username="+userString).subscribe(data => {
-    console.log(data);
-    if (data.success){
 
-      //Is a valid user
-      this.isUser = true;
-      localStorage.setItem('myData', JSON.stringify(data));
-
-      this.router.navigateByUrl('/groups/' + userString, { skipLocationChange: true });
-      //Navigate to the groups component
-
-    }
-    else {
-      this.errorMessage = "Username or Password is Incorrect";
-      // Not a valid user
-      
-    }
-  });
-  this.username = userString;
-  localStorage.setItem("username", userString);
-  this.myValue = "";
-}
 }
